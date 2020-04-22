@@ -1,0 +1,12 @@
+.clock {
+    color: indigo;
+}
+
+.form,
+.greeting {
+    display: none;
+}
+
+.showing {
+    display: block;
+}
