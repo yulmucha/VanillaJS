@@ -1,13 +1,25 @@
 const todoForm = document.querySelector(".js-form-todo");
 const todoInput = todoForm.querySelector("input");
 const todoList = document.querySelector(".js-list-todo");
-const todos = [];
+const TODOS_LS = "todos";
+let todos = [];
 
 function handleSubmit(event) {
     event.preventDefault();
     addTodoItem(todoInput.value);
-    localStorage.setItem("todos", JSON.stringify(todos))
+    saveTodos();
     todoInput.value = "";
+}
+
+function saveTodos() {
+    localStorage.setItem(TODOS_LS, JSON.stringify(todos));
+}
+
+function handleDelBtnClick(event) {
+    const li = event.target.parentNode;
+    todoList.removeChild(li);
+    todos = todos.filter(function (todo) { return todo.id !== parseInt(li.id) });
+    saveTodos();
 }
 
 function addTodoItem(text) {
@@ -17,11 +29,14 @@ function addTodoItem(text) {
         text: text
     };
     todos.push(todoItem);
+
     const li = document.createElement("li");
     const span = document.createElement("span");
-    const delBtn = document.createElement("button");
     span.innerHTML = text;
+    const delBtn = document.createElement("button");
+    delBtn.addEventListener("click", handleDelBtnClick)
     delBtn.innerHTML = "X";
+
     li.appendChild(span);
     li.appendChild(delBtn);
     li.id = newID;
@@ -29,7 +44,7 @@ function addTodoItem(text) {
 }
 
 function loadTodos() {
-    const parsedTodos = JSON.parse(localStorage.getItem("todos"));
+    const parsedTodos = JSON.parse(localStorage.getItem(TODOS_LS));
     if (parsedTodos !== null) {
         parsedTodos.forEach(function (todo) {
             addTodoItem(todo.text);
