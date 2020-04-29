@@ -5,6 +5,7 @@ const CANVAS_HEIGHT = parseInt(canvas.getAttribute('height'));
 const currentColor = document.querySelector('.js-current-color');
 const palette = document.querySelector('.js-palette');
 const modeBtn = document.querySelector('.js-mode');
+const saveBtn = document.querySelector('.js-save');
 const range = document.querySelector('.js-range');
 
 const ctx = canvas.getContext('2d');
@@ -24,6 +25,14 @@ function handleModeClick(event) {
         modeButton.innerHTML = FILL;
         filling = false;
     }
+}
+
+function handleSaveClick(event) {
+    const image = canvas.toDataURL('image/png');
+    const a = document.createElement('a');
+    a.href = image;
+    a.download = 'canvas_image.png';
+    a.click();
 }
 
 function handleMouseDown(event) {
@@ -59,6 +68,7 @@ function init() {
     canvas.addEventListener('mousemove', handleMouseMove)
     canvas.addEventListener('mouseup', handleMouseUpOnCanvas)
     modeBtn.addEventListener('click', handleModeClick);
+    saveBtn.addEventListener('click', handleSaveClick)
     range.addEventListener('mouseup', handleMouseUpOnRange);
 
     Array.from(palette.children).forEach((colorBtn) => {
