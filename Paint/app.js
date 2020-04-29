@@ -5,6 +5,7 @@ const CANVAS_HEIGHT = parseInt(canvas.getAttribute('height'));
 const currentColor = document.querySelector('.js-current-color');
 const palette = document.querySelector('.js-palette');
 const modeBtn = document.querySelector('.js-mode');
+const range = document.querySelector('.js-range');
 
 const ctx = canvas.getContext('2d');
 
@@ -44,16 +45,21 @@ function handleMouseMove(event) {
     }
 }
 
-function handleMouseUp() {
+function handleMouseUpOnCanvas() {
     painting = false;
     ctx.closePath();
+}
+
+function handleMouseUpOnRange() {
+    ctx.lineWidth = range.value;
 }
 
 function init() {
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove)
-    canvas.addEventListener('mouseup', handleMouseUp)
+    canvas.addEventListener('mouseup', handleMouseUpOnCanvas)
     modeBtn.addEventListener('click', handleModeClick);
+    range.addEventListener('mouseup', handleMouseUpOnRange);
 
     Array.from(palette.children).forEach((colorBtn) => {
         colorBtn.addEventListener('click', () => {
