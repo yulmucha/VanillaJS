@@ -15,6 +15,7 @@ const PAINT = 'Paint';
 
 let painting = false;
 let filling = false;
+let scaling = false;
 
 function handleModeClick(event) {
     const modeButton = event.target
@@ -61,6 +62,23 @@ function stopPainting() {
 
 function handleMouseUpOnRange() {
     ctx.lineWidth = range.value;
+    scaling = false;
+}
+
+function scaleColorIndicator() {
+    let indicatorSize = range.value / 10.0 + 0.2;
+    currentColor.style.transform = `scale(${indicatorSize})`;
+}
+
+function handleMoveSlider() {
+    if (scaling) {
+        scaleColorIndicator();
+    }
+}
+
+function handleClickOrDownSlider() {
+    scaling = true;
+    scaleColorIndicator();
 }
 
 function init() {
@@ -71,6 +89,11 @@ function init() {
     modeBtn.addEventListener('click', handleModeClick);
     saveBtn.addEventListener('click', handleSaveClick);
     range.addEventListener('mouseup', handleMouseUpOnRange);
+    range.addEventListener('click', handleClickOrDownSlider)
+    range.addEventListener('mousedown', handleClickOrDownSlider)
+    range.addEventListener('mousemove', handleMoveSlider)
+
+    scaleColorIndicator();
 
     Array.from(palette.children).forEach((colorBtn) => {
         colorBtn.addEventListener('click', () => {
