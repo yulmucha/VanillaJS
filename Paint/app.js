@@ -54,7 +54,7 @@ function handleMouseMove(event) {
     }
 }
 
-function handleMouseUpOnCanvas() {
+function stopPainting() {
     painting = false;
     ctx.closePath();
 }
@@ -66,9 +66,10 @@ function handleMouseUpOnRange() {
 function init() {
     canvas.addEventListener('mousedown', handleMouseDown);
     canvas.addEventListener('mousemove', handleMouseMove)
-    canvas.addEventListener('mouseup', handleMouseUpOnCanvas)
+    canvas.addEventListener('mouseup', stopPainting);
+    canvas.addEventListener('mouseout', stopPainting);
     modeBtn.addEventListener('click', handleModeClick);
-    saveBtn.addEventListener('click', handleSaveClick)
+    saveBtn.addEventListener('click', handleSaveClick);
     range.addEventListener('mouseup', handleMouseUpOnRange);
 
     Array.from(palette.children).forEach((colorBtn) => {
